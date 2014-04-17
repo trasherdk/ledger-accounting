@@ -43,6 +43,15 @@ describe('Transaction', function() {
     assert(transaction.postings[1].amount.equals(decimal('5')));
     assert(transaction.postings[1].note === 'bla');
   });
+
+  it('should generate ledger', function() {
+    let date = new Date();
+    let account1 = new ledger.Account('foo');
+    let account2 = new ledger.Account('bar');
+    let transaction = new ledger.Transaction({date: date, payee: 'foo bar'});
+    transaction.transfer(account1, account2, decimal('5'));
+    assert(transaction.toLedger());
+  });
 });
 
 describe('reduceBalance', function() {
