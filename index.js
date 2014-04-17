@@ -30,7 +30,7 @@ Transaction.prototype.toLedger = function() {
   assert(this.date instanceof Date);
   assert(this.payee);
 
-  let str = moment(new Date()).format('YYYY-MM-DD') + " " + this.payee;
+  let str = moment(this.date).format('YYYY-MM-DD') + " " + this.payee;
   if (this.note) str += '    ; ' + this.note;
   this.postings.forEach(function(posting) {
     str += "\n    " + posting.toLedger();

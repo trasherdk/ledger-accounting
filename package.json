@@ -15,7 +15,8 @@
     "underscore": "1.6.0"
   },
   "devDependencies": {
-    "mocha": "*"
+    "mocha": "*",
+    "expect.js": "*"
   },
   "scripts": {
     "test": "mocha --reporter spec --timeout 10000 --harmony"
