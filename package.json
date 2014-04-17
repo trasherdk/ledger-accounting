@@ -1,0 +1,19 @@
+{
+  "name": "ledger-accounting",
+  "description": "Double entry accounting",
+  "version": "0.0.1",
+  "main": "index.js",
+  "dependencies": {
+    "bignumber.js": "1.3.0",
+    "moment": "2.6.0",
+    "pad": "0.0.4",
+    "better-assert": "1.0.0",
+    "underscore": "1.6.0"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "scripts": {
+    "test": "mocha --reporter spec --timeout 10000 --harmony"
+  }
+}
