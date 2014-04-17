@@ -19,10 +19,10 @@ Transaction.prototype.transfer = function(fromAccount, toAccount, amount, metada
 
 Transaction.prototype.valid = function() {
   let sum = this.postings.reduce(function(sum, posting) {
-                                   assert(posting instanceof Posting);
-                                   return sum.plus(posting.amount);
-                                 },
-                                 decimal('0'));
+    assert(posting instanceof Posting);
+    return sum.plus(posting.amount);
+  }, decimal('0'));
+  
   return sum.equals(decimal('0'));
 }
 
