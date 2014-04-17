@@ -22,7 +22,7 @@ Transaction.prototype.valid = function() {
     assert(posting instanceof Posting);
     return sum.plus(posting.amount);
   }, decimal('0'));
-  
+
   return sum.equals(decimal('0'));
 }
 
@@ -71,7 +71,7 @@ function reduceBalance(balances, transaction) {
 
   if (transaction instanceof Transaction)
     transaction.postings.forEach(addPosting);
-  else 
+  else
     addPosting(transaction);
 
   return balances;
