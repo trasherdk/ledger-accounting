@@ -40,7 +40,7 @@ Transaction.prototype.toLedger = function() {
 
 function Posting(account, amount, metadata) {
   assert(account instanceof Account);
-  assert(amount instanceof decimal);
+  assert(amount.plus);
 
   _.extend(this, metadata);
 
