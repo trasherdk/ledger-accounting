@@ -56,8 +56,8 @@ describe('Transaction', function() {
 
     let expected =
       "2000-01-01 foo bar\n"      +
-      "  foo    -5.00\n"   +
-      "  bar     5.00";
+      "  foo    -5\n"   +
+      "  bar     5";
 
     function normalize(str) {
       return str.replace(/ +/g, ' ');
