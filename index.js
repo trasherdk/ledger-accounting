@@ -7,6 +7,7 @@ let pad = require('pad');
 let _ = require('underscore');
 
 function Transaction(metadata) {
+  if (!(this instanceof Transaction)) return new Transaction(metadata);
   _.extend(this, metadata);
   this.postings = [];
 }
@@ -39,6 +40,7 @@ Transaction.prototype.toLedger = function() {
 }
 
 function Posting(account, amount, metadata) {
+  if (!(this instanceof Posting)) return new Posting(account, amount, metadata);
   assert(account instanceof Account);
   assert(amount.plus);
 
@@ -57,6 +59,7 @@ Posting.prototype.toLedger = function() {
 }
 
 function Account(name, metadata) {
+  if (!(this instanceof Account)) return new Account(name, metadata);
   _.extend(this, metadata);
   this.name = name;
 }
