@@ -1,4 +1,3 @@
-
 # ledger-accounting
 
   A simple Javascript double-entry accounting library.
@@ -15,11 +14,13 @@
 
 ```js
 var ledger = require('ledger-accounting')
+var Account = ledger.Account;
+var Transaction = ledger.Transaction;
 
 var date = new Date();
-var account1 = new ledger.Account('foo');
-var account2 = new ledger.Account('bar');
-var transaction = new ledger.Transaction({date: date});
+var account1 = Account('foo');
+var account2 = Account('bar');
+var transaction = Transaction({date: date});
 
 transaction.transfer(account1, account2, decimal('5'), {note: 'bla'});
 ```
