@@ -109,4 +109,13 @@ describe('BalanceMap', function() {
     expect(bal.get(account2)).to.eql(decimal('6'));
     expect(bal.get(account3)).to.eql(decimal('1'));
   });
+
+  it('should set balances', function() {
+    let bal = new ledger.BalanceMap();
+    let account = {};
+    expect(bal.has(account)).to.not.be.ok();
+    bal.set(account, decimal(42));
+    expect(bal.has(account)).to.be.ok();
+    expect(bal.get(account)).to.eql(decimal(42));
+  });
 });
