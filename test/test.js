@@ -68,21 +68,21 @@ describe('Transaction', function() {
   });
 });
 
-describe('reduceBalance', function() {
-  it('should work with postings', function() {
+describe('BalanceMap', function() {
+  it('should add postings', function() {
     let account1 = ledger.Account('foo');
     let account2 = ledger.Account('bar');
 
-    let bal;
+    let bal = new ledger.BalanceMap();
 
-    bal = ledger.reduceBalance(bal, ledger.Posting(account1, decimal('5')));
-    bal = ledger.reduceBalance(bal, ledger.Posting(account1, decimal('2')));
+    bal.addPosting(ledger.Posting(account1, decimal('5')));
+    bal.addPosting(ledger.Posting(account1, decimal('2')));
 
-    bal = ledger.reduceBalance(bal, ledger.Posting(account2, decimal('2')));
-    bal = ledger.reduceBalance(bal, ledger.Posting(account2, decimal('7')));
+    bal.addPosting(ledger.Posting(account2, decimal('2')));
+    bal.addPosting(ledger.Posting(account2, decimal('7')));
 
-    expect(bal.get(account1).equals(decimal('7'))).to.be.ok();
-    expect(bal.get(account2).equals(decimal('9'))).to.be.ok();
+    expect(bal.get(account1)).to.eql(decimal('7'));
+    expect(bal.get(account2)).to.eql(decimal('9'));
   });
 
   it('should work with transactions', function() {
@@ -97,12 +97,12 @@ describe('reduceBalance', function() {
     let trans2 = ledger.Transaction();
     trans2.transfer(account2, account3, decimal('1.0'));
 
-    let bal;
-    bal = ledger.reduceBalance(bal, trans1);
-    bal = ledger.reduceBalance(bal, trans2);
+    let bal = new ledger.BalanceMap();
+    bal.addTransaction(trans1);
+    bal.addTransaction(trans2);
 
-    expect(bal.get(account1).equals(decimal('-7'))).to.be.ok();
-    expect(bal.get(account2).equals(decimal('6'))).to.be.ok();
-    expect(bal.get(account3).equals(decimal('1'))).to.be.ok();
+    expect(bal.get(account1)).to.eql(decimal('-7'));
+    expect(bal.get(account2)).to.eql(decimal('6'));
+    expect(bal.get(account3)).to.eql(decimal('1'));
   });
 });

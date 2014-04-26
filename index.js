@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 let decimal = require('bignumber.js'); // TODO use gmp binding (eg. node-gmp)
 let assert = require('better-assert');
@@ -13,10 +13,13 @@ function Transaction(metadata) {
 }
 
 Transaction.prototype.transfer = function(fromAccount, toAccount, amount, metadata) {
+  assert(fromAccount instanceof Account);
+  assert(toAccount instanceof Account);
+  assert(amount.plus);
   this.postings.push(new Posting(fromAccount, amount.neg(), metadata));
   this.postings.push(new Posting(toAccount, amount, metadata));
   return this;
-}
+};
 
 Transaction.prototype.valid = function() {
   let sum = this.postings.reduce(function(sum, posting) {
@@ -25,7 +28,7 @@ Transaction.prototype.valid = function() {
   }, decimal('0'));
 
   return sum.equals(decimal('0'));
-}
+};
 
 Transaction.prototype.toLedger = function() {
   assert(this.date instanceof Date);
@@ -37,7 +40,7 @@ Transaction.prototype.toLedger = function() {
     str += "\n    " + posting.toLedger();
   });
   return str;
-}
+};
 
 function Posting(account, amount, metadata) {
   if (!(this instanceof Posting)) return new Posting(account, amount, metadata);
@@ -51,12 +54,12 @@ function Posting(account, amount, metadata) {
 }
 
 Posting.prototype.toLedger = function() {
-  assert(this.account.name.match(/^([\w:.@-]( (?!$))?)+$/))
+  assert(this.account.name.match(/^([\w:.@-]( (?!$))?)+$/));
 
   let str = pad(this.account.name, 40) + pad(10, this.amount.toString());
   if (this.note) str += '  ; ' + this.note;
   return str;
-}
+};
 
 function Account(name, metadata) {
   if (!(this instanceof Account)) return new Account(name, metadata);
@@ -64,23 +67,31 @@ function Account(name, metadata) {
   this.name = name;
 }
 
-function reduceBalance(balances, transaction) {
-  if (!balances) balances = new Map();
-  function addPosting(posting) {
-    if (!balances.has(posting.account))
-      balances.set(posting.account, decimal('0'))
-    balances.set(posting.account, balances.get(posting.account).plus(posting.amount));
-  }
-
-  if (transaction instanceof Transaction)
-    transaction.postings.forEach(addPosting);
-  else
-    addPosting(transaction);
-
-  return balances;
+function BalanceMap() {
+  this.balances = new Map();
 }
 
-exports.Transaction = Transaction
-exports.Posting = Posting
-exports.Account = Account
-exports.reduceBalance = reduceBalance;
+BalanceMap.prototype.get = function(account) {
+  if (this.balances.has(account))
+    return this.balances.get(account);
+  return decimal(0);
+};
+
+BalanceMap.prototype.addPosting = function(posting) {
+  assert(posting instanceof Posting);
+  this.balances.set(posting.account, this.get(posting.account).plus(posting.amount));
+};
+
+BalanceMap.prototype.addTransaction = function(transaction) {
+  assert(transaction instanceof Transaction);
+
+  var self = this;
+  transaction.postings.forEach(function(posting) {
+    self.addPosting(posting);
+  });
+};
+
+exports.Transaction = Transaction;
+exports.Posting = Posting;
+exports.Account = Account;
+exports.BalanceMap = BalanceMap;
