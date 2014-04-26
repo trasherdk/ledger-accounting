@@ -75,11 +75,15 @@ describe('BalanceMap', function() {
 
     let bal = new ledger.BalanceMap();
 
+    expect(bal.has(account1)).to.not.be.ok();
+
     bal.addPosting(ledger.Posting(account1, decimal('5')));
     bal.addPosting(ledger.Posting(account1, decimal('2')));
 
     bal.addPosting(ledger.Posting(account2, decimal('2')));
     bal.addPosting(ledger.Posting(account2, decimal('7')));
+
+    expect(bal.has(account1)).to.be.ok();
 
     expect(bal.get(account1)).to.eql(decimal('7'));
     expect(bal.get(account2)).to.eql(decimal('9'));

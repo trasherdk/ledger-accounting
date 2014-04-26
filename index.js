@@ -77,6 +77,10 @@ BalanceMap.prototype.get = function(account) {
   return decimal(0);
 };
 
+BalanceMap.prototype.has = function(account) {
+  return this.balances.has(account);
+};
+
 BalanceMap.prototype.addPosting = function(posting) {
   assert(posting instanceof Posting);
   this.balances.set(posting.account, this.get(posting.account).plus(posting.amount));
