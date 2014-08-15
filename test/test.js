@@ -118,4 +118,27 @@ describe('BalanceMap', function() {
     expect(bal.has(account)).to.be.ok();
     expect(bal.get(account)).to.eql(decimal(42));
   });
+
+  it('should serialize to JSON', function() {
+    let account1 = ledger.Account('foo');
+    let account2 = ledger.Account('bar');
+    let bal = new ledger.BalanceMap();
+    bal.set(account1, decimal(37));
+    bal.set(account2, decimal(42));
+    expect(bal.toJSON()).to.eql({foo: '37', bar: '42'});
+  });
+
+  it('should serialize from JSON', function() {
+    let account1 = ledger.Account('foo');
+    let account2 = ledger.Account('bar');
+
+    var bal = ledger.BalanceMap.fromJSON({foo: '37', bar: '42'}, function(account_name) {
+      expect(account_name).to.match(/^(foo|bar)$/);
+      return account_name == 'foo' ? account1 : account2;
+    });
+
+    expect(bal.balances.size).to.be(2);
+    expect(bal.get(account1)).to.eql(decimal(37));
+    expect(bal.get(account2)).to.eql(decimal(42));
+  });
 });
