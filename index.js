@@ -56,7 +56,7 @@ function Posting(account, amount, metadata) {
 Posting.prototype.toLedger = function() {
   assert(this.account.name.match(/^([\w:.@-]( (?!$))?)+$/));
 
-  let str = pad(this.account.name, 40) + pad(10, this.amount.toString());
+  let str = pad(this.account.name, 40) + '  ' + pad(10, this.amount.toFixed());
   if (this.note) str += '  ; ' + this.note;
   return str;
 };
