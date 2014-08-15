@@ -1,7 +1,7 @@
 "use strict";
 
 let decimal = require('bignumber.js'); // TODO use gmp binding (eg. node-gmp)
-let assert = require('better-assert');
+let assert = require('assert');
 let moment = require('moment');
 let pad = require('pad');
 let _ = require('underscore');
